@@ -1,0 +1,8 @@
+<h2>タスクの編集・作成</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">保存する</button>
+</form>
+<hr>
+<p><a href="{% url 'task-list' %}">キャンセルして戻る</a></p>

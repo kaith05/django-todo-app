@@ -1,0 +1,6 @@
+<h2>タスク詳細</h2>
+<p><strong>タイトル:</strong> {{ task.title }}</p>
+<p><strong>詳細:</strong><br>{{ task.description|linebreaksbr }}</p>
+<p><strong>作成日時:</strong> {{ task.created_at }}</p>
+<hr>
+<p><a href="{% url 'task-list' %}">⬅️ 一覧に戻る</a></p>

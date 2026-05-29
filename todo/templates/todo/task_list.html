@@ -1,0 +1,23 @@
+<h2>{{ request.user }} のタスク一覧</h2>
+<p><a href="{% url 'logout' %}">ログアウト</a></p>
+<p><a href="{% url 'task-create' %}">➕ 新しいタスクを追加</a></p>
+
+<table border="1" style="width:100%; text-align:left; border-collapse:collapse;">
+    <tr>
+        <th>タイトル</th>
+        <th>操作</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td><a href="{% url 'task-detail' task.id %}">{{ task.title }}</a></td>
+        <td>
+            <a href="{% url 'task-update' task.id %}">✏️ 編集</a> | 
+            <a href="{% url 'task-delete' task.id %}" style="color:red;">🗑️ 削除</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="2">タスクはまだありません。</td>
+    </tr>
+    {% endfor %}
+</table>

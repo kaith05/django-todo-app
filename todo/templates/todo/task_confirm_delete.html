@@ -1,0 +1,9 @@
+<h2>本当に削除しますか？</h2>
+<p>「<strong>{{ task.title }}</strong>」を完全に削除します。この操作は取り消せません。</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" style="background-color:red; color:white;">本当に削除する</button>
+</form>
+<hr>
+<p><a href="{% url 'task-list' %}">キャンセル</a></p>
