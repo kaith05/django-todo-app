@@ -1,9 +1,35 @@
-<h2>本当に削除しますか？</h2>
-<p>「<strong>{{ task.title }}</strong>」を完全に削除します。この操作は取り消せません。</p>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タスク削除の確認 - ToDo App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-6 text-slate-800">
 
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit" style="background-color:red; color:white;">本当に削除する</button>
-</form>
-<hr>
-<p><a href="{% url 'task-list' %}">キャンセル</a></p>
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-slate-100 text-center">
+        <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+            ⚠️
+        </div>
+
+        <h1 class="text-xl font-bold text-slate-900 mb-2">タスクを削除しますか？</h1>
+        <p class="text-sm text-slate-500 mb-6">
+            「<span class="font-semibold text-slate-700">{{ task.title }}</span>」を削除しようとしています。<br>この操作は取り消せません。
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="flex items-center gap-3">
+                <a href="{% url 'task-list' %}" class="w-1/2 text-center bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium py-3 rounded-xl text-sm transition">
+                    戻る
+                </a>
+                <button type="submit" class="w-1/2 bg-rose-500 hover:bg-rose-600 text-white font-medium py-3 rounded-xl text-sm transition shadow-md shadow-rose-100">
+                    削除する
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

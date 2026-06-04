@@ -1,6 +1,57 @@
-<h2>タスク詳細</h2>
-<p><strong>タイトル:</strong> {{ task.title }}</p>
-<p><strong>詳細:</strong><br>{{ task.description|linebreaksbr }}</p>
-<p><strong>作成日時:</strong> {{ task.created_at }}</p>
-<hr>
-<p><a href="{% url 'task-list' %}">⬅️ 一覧に戻る</a></p>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タスク詳細 - ToDo App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-6 text-slate-800">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-slate-100">
+        <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
+            <a href="{% url 'task-list' %}" class="text-sm font-medium text-indigo-600 hover:text-indigo-700 transition flex items-center gap-1">
+                ← 一覧に戻る
+            </a>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full {% if task.complete %}bg-emerald-50 text-emerald-600{% else %}bg-amber-50 text-amber-600{% endif %}">
+                {% if task.complete %}完了{% else %}進行中{% endif %}
+            </span>
+        </div>
+
+        <div class="space-y-4 mb-8">
+            <div>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">タスク名</span>
+                <h1 class="text-2xl font-bold text-slate-900 mt-0.5 {% if task.complete %}line-through text-slate-400{% endif %}">
+                    {{ task.title }}
+                </h1>
+            </div>
+
+            {% if task.description %}
+            <div>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">詳細・メモ</span>
+                <p class="text-slate-600 text-sm mt-1 bg-slate-50 rounded-xl p-4 border border-slate-100 whitespace-pre-wrap">
+                    {{ task.description }}
+                </p>
+            </div>
+            {% endif %}
+
+            <div>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">作成日時</span>
+                <p class="text-slate-500 text-xs mt-0.5">
+                    {{ task.created|date:"Y年m月d日 H:i" }}
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <a href="{% url 'task-update' task.id %}" class="w-1/2 text-center bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-semibold py-3 rounded-xl text-sm transition">
+                編集する
+            </a>
+            <a href="{% url 'task-delete' task.id %}" class="w-1/2 text-center bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold py-3 rounded-xl text-sm transition">
+                削除する
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
