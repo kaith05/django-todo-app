@@ -1,0 +1,27 @@
+<form method="GET" class="mb-6 flex flex-col md:flex-row gap-3">
+    <div class="relative flex-1">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 pointer-events-none text-sm">🔍</span>
+        <input type="text" name="search-area" value="{{ search_input }}" placeholder="タスクを検索..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition shadow-sm">
+    </div>
+    
+    <div class="relative min-w-[140px]">
+        <select name="status-filter" class="w-full h-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition shadow-sm cursor-pointer">
+            <option value="all" {% if status_filter == "all" %}selected{% endif %}>すべての状態</option>
+            <option value="incomplete" {% if status_filter == "incomplete" %}selected{% endif %}>未完了</option>
+            <option value="complete" {% if status_filter == "complete" %}selected{% endif %}>完了</option>
+        </select>
+    </div>
+
+    <div class="relative min-w-[140px]">
+        <select name="priority-filter" class="w-full h-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition shadow-sm cursor-pointer">
+            <option value="all" {% if priority_filter == "all" %}selected{% endif %}>すべての優先度</option>
+            <option value="high" {% if priority_filter == "high" %}selected{% endif %}>優先度：高</option>
+            <option value="medium" {% if priority_filter == "medium" %}selected{% endif %}>優先度：中</option>
+            <option value="low" {% if priority_filter == "low" %}selected{% endif %}>優先度：低</option>
+        </select>
+    </div>
+
+    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-xl text-sm transition shadow-md shadow-indigo-50">
+        適用
+    </button>
+</form>

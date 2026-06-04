@@ -1,118 +1,23 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django ToDo App</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-50 min-h-screen text-slate-800">
+{% extends 'todo/base.html' %}
 
-    <div class="max-w-3xl mx-auto px-4 py-12">
-        <div class="flex justify-between items-center mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <div>
-                <h1 class="text-2xl font-bold text-slate-900">My Tasks</h1>
-                <p class="text-sm text-slate-500 mt-1">こんにちは、<span class="font-semibold text-indigo-600">{{ request.user }}</span> さん</p>
-            </div>
-            <div class="flex items-center gap-4">
-                <span class="bg-indigo-50 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-indigo-100">
-                    未完了: <span class="text-sm font-bold">{{ count }}</span> 個
-                </span>
-                <form action="{% url 'logout' %}" method="post" class="inline">
-                    {% csrf_token %}
-                    <button type="submit" class="text-sm text-slate-400 hover:text-rose-600 transition font-medium">ログアウト</button>
-                </form>
-            </div>
-        </div>
+{% block title %}マイタスク - Django ToDo App{% endblock %}
 
-        <form method="GET" class="mb-6 flex flex-col md:flex-row gap-3">
-            <div class="relative flex-1">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 pointer-events-none text-sm">🔍</span>
-                <input type="text" name="search-area" value="{{ search_input }}" placeholder="タスクを検索..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition shadow-sm">
-            </div>
-            
-            <div class="relative min-w-[140px]">
-                <select name="status-filter" class="w-full h-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition shadow-sm cursor-pointer">
-                    <option value="all" {% if status_filter == "all" %}selected{% endif %}>すべての状態</option>
-                    <option value="incomplete" {% if status_filter == "incomplete" %}selected{% endif %}>未完了</option>
-                    <option value="complete" {% if status_filter == "complete" %}selected{% endif %}>完了</option>
-                </select>
-            </div>
+{% block content %}
+    {% include 'todo/components/search_filter.html' %}
 
-            <div class="relative min-w-[140px]">
-                <select name="priority-filter" class="w-full h-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition shadow-sm cursor-pointer">
-                    <option value="all" {% if priority_filter == "all" %}selected{% endif %}>すべての優先度</option>
-                    <option value="high" {% if priority_filter == "high" %}selected{% endif %}>優先度：高</option>
-                    <option value="medium" {% if priority_filter == "medium" %}selected{% endif %}>優先度：中</option>
-                    <option value="low" {% if priority_filter == "low" %}selected{% endif %}>優先度：低</option>
-                </select>
-            </div>
+    <div class="flex justify-end mb-4">
+        <a href="{% url 'task-create' %}" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition shadow-sm flex items-center gap-1.5">
+            <span>＋</span> 新しいタスクを追加
+        </a>
+    </div>
 
-            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-xl text-sm transition shadow-md shadow-indigo-50">
-                適用
-            </button>
-        </form>
-
-        <div class="flex justify-end mb-4">
-            <a href="{% url 'task-create' %}" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition shadow-sm flex items-center gap-1.5">
-                <span>＋</span> 新しいタスクを追加
-            </a>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            {% for task in tasks %}
-            <div class="flex items-center justify-between p-4 border-b border-slate-100 hover:bg-slate-50 transition {% if task.complete %}bg-slate-50/50{% endif %}">
-                
-                <div class="flex items-center gap-4 flex-1 min-w-0">
-                    <form action="{% url 'task-update' task.id %}" method="post" class="flex items-center">
-                        {% csrf_token %}
-                        <input type="hidden" name="title" value="{{ task.title }}">
-                        <input type="hidden" name="description" value="{{ task.description }}">
-                        <input type="hidden" name="priority" value="{{ task.priority }}">
-                        <input type="hidden" name="complete" value="{% if task.complete %}false{% else %}true{% endif %}">
-                        
-                        <button type="submit" class="w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all 
-                            {% if task.complete %}
-                                bg-emerald-500 border-emerald-500 text-white shadow-sm shadow-emerald-100
-                            {% else %}
-                                border-slate-300 bg-white hover:border-indigo-500
-                            {% endif %}">
-                            {% if task.complete %}✓{% endif %}
-                        </button>
-                    </form>
-
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0 flex-1">
-                        <a href="{% url 'task-detail' task.id %}" class="text-sm font-medium text-slate-800 hover:text-indigo-600 transition truncate {% if task.complete %}line-through text-slate-400 font-normal{% endif %}">
-                            {{ task.title }}
-                        </a>
-
-                        {% if task.priority == 'high' %}
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-rose-50 text-rose-700 border border-rose-100 w-fit">高</span>
-                        {% elif task.priority == 'medium' %}
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100 w-fit">中</span>
-                        {% else %}
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200 w-fit">低</span>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-3 pl-4">
-                    <a href="{% url 'task-update' task.id %}" class="text-slate-400 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-slate-100 transition text-sm">
-                        ✏️
-                    </a>
-                    <a href="{% url 'task-delete' task.id %}" class="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-slate-100 transition text-sm">
-                        🗑️
-                    </a>
-                </div>
-
-            </div>
-            {% empty %}
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        {% for task in tasks %}
+            {% include 'todo/components/task_item.html' %}
+        {% empty %}
             <div class="p-12 text-center">
                 <p class="text-slate-400 text-sm">該当するタスクが見つかりません。</p>
             </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
-
-</body>
-</html>
+{% endblock %}

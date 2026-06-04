@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django ToDo App{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 flex flex-col">
+
+    {% include 'todo/components/header.html' %}
+
+    <div class="max-w-3xl w-full mx-auto px-4 py-12 flex-grow flex flex-col {% block container_class %}{% endblock %}">
+        
+        {% block content %}
+        {% endblock %}
+        
+    </div>
+
+    {% include 'todo/components/footer.html' %}
+
+</body>
+</html>
