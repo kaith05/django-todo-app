@@ -1,0 +1,12 @@
+{% extends 'todo/base.html' %}
+
+{% block container_class %}items-center justify-center{% endblock %}
+
+{% block content %}
+    <div class="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-slate-100 dark:border-slate-700 transition-colors duration-300">
+        
+        {% block card_content %}
+        {% endblock %}
+        
+    </div>
+{% endblock %}

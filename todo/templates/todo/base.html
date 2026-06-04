@@ -5,16 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Django ToDo App{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <style>
+        .dark .login-form-custom p { color: #cbd5e1; }
+        .dark .login-form-custom input { background-color: #334155; border-color: #475569; color: #ffffff; }
+        .dark .login-form-custom input:focus { border-color: #818cf8; background-color: #1e293b; }
+    </style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800 flex flex-col">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
     {% include 'todo/components/header.html' %}
 
     <div class="max-w-3xl w-full mx-auto px-4 py-12 flex-grow flex flex-col {% block container_class %}{% endblock %}">
-        
         {% block content %}
         {% endblock %}
-        
     </div>
 
     {% include 'todo/components/footer.html' %}
